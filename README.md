@@ -31,7 +31,7 @@ The code generates a random admin password which is available as an
 [output](https://www.terraform.io/docs/configuration/outputs.html) once deployment is
 complete. This password is used for the local administrator account (named according
 to the `admin_user` input variable) on all the servers, so after the DC is promoted
-it will also be the domain admin password. By default you can log on as `AD\\dcadmin`
+it will also be the domain admin password. By default you can log on as `AD\dcadmin`
 with this password, or `dcadmin@ad.example.com` (or whatever you've set `ad_domain`
 and `dns_domain_name` to).
 
