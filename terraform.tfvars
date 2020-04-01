@@ -9,7 +9,7 @@ dns_domain_name      = "example.com" # CHANGE ME
 dns_rg_name          = "dns-rg"
 dns_verification     = "MS=ms12345678"
 location             = "Australia East"
-member_count         = 2
+member_count         = 1
 member_image_sku     = "2019-Datacenter-smalldisk"
 member_image_version = "latest"
 member_name          = "member"
