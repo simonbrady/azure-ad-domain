@@ -1,3 +1,5 @@
+# Values for these are set in terraform.tfvars
+
 variable "ad_domain" {
   type        = string
   description = "Name of AD domain within DNS zone"

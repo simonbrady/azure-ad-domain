@@ -1,3 +1,4 @@
+# See variables.tf for descriptions of these
 ad_domain            = "ad"
 admin_user           = "dcadmin"
 admin_cidrs          = ["123.45.67.89/32"] # CHANGE ME

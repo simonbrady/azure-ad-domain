@@ -1,7 +1,7 @@
 # DNS resources
 
 # Only required if you want to create a custom domain name for AAD
-resource "azurerm_dns_txt_record" "verify" {
+resource "azurerm_dns_txt_record" "verification" {
   name                = var.ad_domain
   zone_name           = var.dns_domain_name
   resource_group_name = var.dns_rg_name

@@ -43,16 +43,16 @@ resource "azurerm_windows_virtual_machine" "member" {
   size                  = var.member_size
   timezone              = var.timezone
 
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "StandardSSD_LRS"
+  }
+
   source_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
     sku       = var.member_image_sku
     version   = var.member_image_version
-  }
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "StandardSSD_LRS"
   }
 }
 
