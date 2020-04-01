@@ -12,7 +12,7 @@ play with tools like
 
 ## Deployment
 
-Environment-specifc settings are in [terraform.tfvars](../blob/master/terraform.tfvars). At a minimum
+Environment-specifc settings are in [terraform.tfvars](terraform.tfvars). At a minimum
 you'll need to change `admin_cidrs` and `dns_domain_name` (see below for more about DNS).
 Once you've done this, you can [install Terraform](https://www.terraform.io/downloads.html)
 if needed (any v0.12 release should be fine) then deploy from the command line:
@@ -43,4 +43,4 @@ create DNS `A` records for the servers' public IPs and a `TXT` record for
 [Azure AD custom domain verification](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-custom-domain).
 
 If you don't have a public DNS zone you can comment out the resources in
-[dns.tf](../blob/master/dns.tf), although you'll still need to set `dns_domain_name` for AD itself.
+[dns.tf](dns.tf), although you'll still need to set `dns_domain_name` for AD itself.
