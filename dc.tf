@@ -21,11 +21,6 @@ resource "azurerm_network_interface" "dc" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "dc" {
-  network_interface_id      = azurerm_network_interface.dc.id
-  network_security_group_id = azurerm_network_security_group.ad.id
-}
-
 data "azurerm_platform_image" "dc" {
   location  = var.location
   publisher = "MicrosoftWindowsServer"

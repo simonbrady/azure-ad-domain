@@ -25,12 +25,6 @@ resource "azurerm_network_interface" "member" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "member" {
-  count                     = var.member_count
-  network_interface_id      = azurerm_network_interface.member[count.index].id
-  network_security_group_id = azurerm_network_security_group.ad.id
-}
-
 data "azurerm_platform_image" "member" {
   location  = var.location
   publisher = "MicrosoftWindowsServer"
