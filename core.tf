@@ -16,14 +16,14 @@ resource "azurerm_subnet" "dc" {
   name                 = "dc"
   resource_group_name  = azurerm_resource_group.ad.name
   virtual_network_name = azurerm_virtual_network.ad.name
-  address_prefix       = cidrsubnet(azurerm_virtual_network.ad.address_space[0], 8, 0)
+  address_prefixes     = [cidrsubnet(azurerm_virtual_network.ad.address_space[0], 8, 0)]
 }
 
 resource "azurerm_subnet" "member" {
   name                 = "member"
   resource_group_name  = azurerm_resource_group.ad.name
   virtual_network_name = azurerm_virtual_network.ad.name
-  address_prefix       = cidrsubnet(azurerm_virtual_network.ad.address_space[0], 8, 1)
+  address_prefixes     = [cidrsubnet(azurerm_virtual_network.ad.address_space[0], 8, 1)]
 }
 
 resource "azurerm_network_security_group" "ad" {
@@ -44,7 +44,10 @@ resource "azurerm_network_security_group" "ad" {
   }
 }
 
-resource "random_password" "ad" {
+# Never do this for a password that matters, because anyone with
+# direct access to our state or the ability to run "terraform output"
+# will see the password in cleartext
+resource "random_string" "password" {
   length      = 30
   min_lower   = 1
   min_upper   = 1

@@ -31,13 +31,20 @@ resource "azurerm_network_interface_security_group_association" "member" {
   network_security_group_id = azurerm_network_security_group.ad.id
 }
 
+data "azurerm_platform_image" "member" {
+  location  = var.location
+  publisher = "MicrosoftWindowsServer"
+  offer     = "WindowsServer"
+  sku       = var.member_image_sku
+}
+
 resource "azurerm_windows_virtual_machine" "member" {
   count                 = var.member_count
   name                  = "${local.member_prefix}${format("%02d", count.index + 1)}"
   location              = azurerm_resource_group.ad.location
   resource_group_name   = azurerm_resource_group.ad.name
   admin_username        = var.admin_user
-  admin_password        = random_password.ad.result
+  admin_password        = random_string.password.result
   computer_name         = "${var.member_name}${format("%02d", count.index + 1)}"
   network_interface_ids = [azurerm_network_interface.member[count.index].id]
   size                  = var.member_size
@@ -49,10 +56,10 @@ resource "azurerm_windows_virtual_machine" "member" {
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = var.member_image_sku
-    version   = var.member_image_version
+    publisher = data.azurerm_platform_image.member.publisher
+    offer     = data.azurerm_platform_image.member.offer
+    sku       = data.azurerm_platform_image.member.sku
+    version   = data.azurerm_platform_image.member.version
   }
 }
 
@@ -74,7 +81,7 @@ resource "azurerm_virtual_machine_extension" "join_domain" {
   )
   protected_settings = jsonencode(
     {
-      Password = random_password.ad.result
+      Password = random_string.password.result
     }
   )
 }

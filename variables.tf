@@ -20,11 +20,6 @@ variable "dc_image_sku" {
   description = "SKU for domain controller VM image"
 }
 
-variable "dc_image_version" {
-  type        = string
-  description = "Version of domain controller VM image"
-}
-
 variable "dc_name" {
   type        = string
   description = "Domain controller computer name"
@@ -63,11 +58,6 @@ variable "member_count" {
 variable "member_image_sku" {
   type        = string
   description = "SKU for member server VM image"
-}
-
-variable "member_image_version" {
-  type        = string
-  description = "Version of member server VM image"
 }
 
 variable "member_name" {

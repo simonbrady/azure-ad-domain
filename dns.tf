@@ -12,7 +12,7 @@ resource "azurerm_dns_txt_record" "verification" {
 }
 
 resource "azurerm_dns_a_record" "dc_public" {
-  name                = var.dc_name
+  name                = "${var.dc_name}.${var.ad_domain}"
   zone_name           = var.dns_domain_name
   resource_group_name = var.dns_rg_name
   ttl                 = 300
@@ -21,7 +21,7 @@ resource "azurerm_dns_a_record" "dc_public" {
 
 resource "azurerm_dns_a_record" "member_public" {
   count               = var.member_count
-  name                = "${var.member_name}${format("%02d", count.index + 1)}"
+  name                = "${var.member_name}${format("%02d", count.index + 1)}.${var.ad_domain}"
   zone_name           = var.dns_domain_name
   resource_group_name = var.dns_rg_name
   ttl                 = 300

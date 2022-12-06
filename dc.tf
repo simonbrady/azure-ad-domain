@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "dc" {
     name                          = "primary"
     subnet_id                     = azurerm_subnet.dc.id
     private_ip_address_allocation = "Static"
-    private_ip_address            = cidrhost(azurerm_subnet.dc.address_prefix, 4)
+    private_ip_address            = cidrhost(azurerm_subnet.dc.address_prefixes[0], 4)
     public_ip_address_id          = azurerm_public_ip.dc.id
   }
 }
@@ -26,12 +26,19 @@ resource "azurerm_network_interface_security_group_association" "dc" {
   network_security_group_id = azurerm_network_security_group.ad.id
 }
 
+data "azurerm_platform_image" "dc" {
+  location  = var.location
+  publisher = "MicrosoftWindowsServer"
+  offer     = "WindowsServer"
+  sku       = var.dc_image_sku
+}
+
 resource "azurerm_windows_virtual_machine" "dc" {
   name                  = local.dc_prefix
   location              = azurerm_resource_group.ad.location
   resource_group_name   = azurerm_resource_group.ad.name
   admin_username        = var.admin_user
-  admin_password        = random_password.ad.result
+  admin_password        = random_string.password.result
   computer_name         = var.dc_name
   network_interface_ids = [azurerm_network_interface.dc.id]
   size                  = var.dc_size
@@ -43,10 +50,10 @@ resource "azurerm_windows_virtual_machine" "dc" {
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = var.dc_image_sku
-    version   = var.dc_image_version
+    publisher = data.azurerm_platform_image.dc.publisher
+    offer     = data.azurerm_platform_image.dc.offer
+    sku       = data.azurerm_platform_image.dc.sku
+    version   = data.azurerm_platform_image.dc.version
   }
 }
 
@@ -54,7 +61,7 @@ resource "azurerm_windows_virtual_machine" "dc" {
 locals {
   dc_promote = <<-END
     powershell "
-    $Password = ConvertTo-SecureString -AsPlainText -String '${random_password.ad.result}' -Force;
+    $Password = ConvertTo-SecureString -AsPlainText -String '${random_string.password.result}' -Force;
     Install-WindowsFeature AD-Domain-Services -IncludeManagementTools;
     Install-ADDSForest -DomainName '${var.ad_domain}.${var.dns_domain_name}' -SafeModeAdministratorPassword $Password -InstallDns -Force
     "
