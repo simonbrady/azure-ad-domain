@@ -8,13 +8,13 @@ public IPs for RDP access from the CIDR range(s) you whitelist.
 This isn't intended as a production-ready AD deployment (and seriously, why would you
 do that in Azure?) but it's useful to simulate an on-prem environment if you want to
 play with tools like
-[Azure AD Connect](https://docs.microsoft.com/en-us/azure/active-directory/hybrid/whatis-azure-ad-connect).
+[Entra Connect](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect).
 
 ## Deployment
 
 Environment-specifc settings are in [terraform.tfvars](terraform.tfvars). At a minimum
 you'll need to change `admin_cidrs` and `dns_domain_name` (see below for more about DNS).
-Once you've done this, you can [install Terraform](https://developer.hashicorp.com/terraform/downloads)
+Once you've done this, you can [install Terraform](https://developer.hashicorp.com/terraform/install)
 if needed (any 1.x release should be fine) then deploy from the command line:
 
 ```
@@ -40,7 +40,7 @@ and `dns_domain_name` to).
 At a minimum the `dns_domain_name` variable is used to construct the fully-qualified
 AD domain name. If you have an existing public DNS zone in Azure, the code will also
 create DNS `A` records for the servers' public IPs and a `TXT` record for
-[Azure AD custom domain verification](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-custom-domain).
+[Entra custom domain verification](https://learn.microsoft.com/en-us/entra/fundamentals/add-custom-domain).
 
 If you don't have a public DNS zone you can comment out the resources in
 [dns.tf](dns.tf) and the DNS-related outputs in [outputs.tf](outputs.tf),
